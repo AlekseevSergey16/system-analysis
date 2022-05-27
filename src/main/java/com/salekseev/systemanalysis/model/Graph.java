@@ -199,7 +199,7 @@ public class Graph {
         int count = 0;
         while (true) {
             if (count > 1000) {
-                return 0;
+                return Integer.MAX_VALUE;
             }
             if (edges[start] != null) {
                 return edges[start].getU();

@@ -48,7 +48,11 @@ public class ShortestPathController {
         for (var i = 0; i < n; i++) {
             for (var j = 0; j < m; j++) {
                 TextField cell = view.createCellNoneValid();
-                cell.setText(String.valueOf(shortestPathMatrix[i][j]));
+                if (shortestPathMatrix[i][j] == Integer.MAX_VALUE) {
+                    cell.setText("inf");
+                } else {
+                    cell.setText(String.valueOf(shortestPathMatrix[i][j]));
+                }
                 view.shortestPathMatrix.add(cell, j, i);
             }
         }

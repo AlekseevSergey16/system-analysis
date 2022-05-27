@@ -36,7 +36,7 @@ public class GeneralView extends VBox {
         Tab lab4 = new Tab("Лаб-4", shortestPathView);
         Tab lab5 = new Tab("Лаб-5", structuralRedundancyView);
 
-        tabPane.setPrefSize(1500, 600);
+        tabPane.setPrefSize(1500, 2000);
         tabPane.getTabs().addAll(lab1, lab4, lab5);
 
         return tabPane;
