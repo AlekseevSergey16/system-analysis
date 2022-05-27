@@ -1,0 +1,19 @@
+.button {
+    /*-fx-background-radius: 4;*/
+    -fx-background-insets: 0;
+    -fx-border-color: #bbbaba;
+    -fx-font-family: "Segoe UI";
+    /*-fx-background-color: transparent;*/
+    -fx-border-radius: 4;
+    -fx-background-color: rgb(32,145,151);
+    -fx-text-fill: white;
+}
+.button:hover {
+    /*-fx-background-color: #efefef;*/
+    -fx-border-color: rgb(32,145,151);
+    /*-fx-border-color: gray;*/
+}
+
+.button:pressed {
+    -fx-background-color: linear-gradient(#d2d1d1, #eeeeee);
+}

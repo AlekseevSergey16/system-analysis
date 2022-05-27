@@ -1,0 +1,11 @@
+.text-field {
+    -right-button-visible: false;
+}
+
+.button:focused {
+    -fx-border-style: solid;
+}
+
+* {
+    -fx-font-size: 14px;
+}

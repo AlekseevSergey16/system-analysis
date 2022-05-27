@@ -1,0 +1,33 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.10'
+}
+
+group 'com.salekseev'
+version '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+sourceCompatibility = '15'
+targetCompatibility = '15'
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+application {
+    mainModule = 'com.salekseev.systemanalysis'
+    mainClass = 'com.salekseev.systemanalysis.Main'
+}
+
+javafx {
+    version = '15'
+    modules = ['javafx.controls', 'javafx.fxml', 'javafx.graphics', 'javafx.base']
+}
+
+dependencies {
+    implementation 'org.jfxtras:jmetro:11.6.15'
+}
