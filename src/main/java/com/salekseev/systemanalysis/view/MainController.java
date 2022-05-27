@@ -72,8 +72,10 @@ public class MainController {
     }
 
     private void showRightsIncidents(List<List<Integer>> rightsIncidents) {
+        int i = 0;
         for (List<Integer> valueList : rightsIncidents) {
-            view.rightsIncidentsList.getItems().add(valueList.toString());
+            view.rightsIncidentsList.getItems().add("G(%d)=".formatted(i + 1) + " " + valueList.toString());
+            i++;
         }
         view.rightsIncidentsLabel.setVisible(true);
         view.rightsIncidentsList.setVisible(true);

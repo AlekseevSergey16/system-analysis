@@ -37,9 +37,7 @@ public class Graph {
                     numbers.add(j + 1);
                 }
             }
-            if (!numbers.isEmpty()) {
-                rightsIncidents.add(numbers);
-            }
+            rightsIncidents.add(numbers);
         }
 
         return rightsIncidents;
