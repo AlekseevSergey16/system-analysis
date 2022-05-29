@@ -37,6 +37,7 @@ public class StructuralRedundancyView extends StackPane {
     private VBox createView() {
         matrix = new GridPane();
         matrix.setPadding(new Insets(0, 0, 0, 5));
+        matrix.setVisible(false);
         adjacencyMatrixLabel = new Label("Матрица Смежности");
         adjacencyMatrixLabel.setVisible(false);
         adjacencyMatrixLabel.setPadding(new Insets(0, 0, 0, 5));

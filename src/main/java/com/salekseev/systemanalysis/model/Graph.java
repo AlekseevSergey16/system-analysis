@@ -1,7 +1,9 @@
 package com.salekseev.systemanalysis.model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Graph {
 
@@ -35,6 +37,23 @@ public class Graph {
             for (int j = 0; j < n; j++) {
                 if (adjacencyMatrix[i][j] == 1) {
                     numbers.add(j + 1);
+                }
+            }
+            rightsIncidents.add(numbers);
+        }
+
+        return rightsIncidents;
+    }
+
+    private List<List<Integer>> transformToRightsIncidents2() {
+        int n = adjacencyMatrix[0].length;
+        List<List<Integer>> rightsIncidents = new ArrayList<>();
+
+        for (int i = 0; i < n; i++) {
+            List<Integer> numbers = new ArrayList<>();
+            for (int j = 0; j < n; j++) {
+                if (adjacencyMatrix[i][j] == 1) {
+                    numbers.add(j);
                 }
             }
             rightsIncidents.add(numbers);
@@ -251,5 +270,148 @@ public class Graph {
 
         return new double[]{R, e2};
     }
+
+    // lab3
+    public List<Subgraph> topologicalDecomposition() {
+        int countV = adjacencyMatrix[0].length;
+        List<Arc> e = createArcList();
+        List<Subgraph> Sub = new ArrayList<>();
+
+        List<Integer> notUsedV = new ArrayList<>(); //список еще не использованных вершин
+        for (int i = 0; i < countV; i++)
+            notUsedV.add(i);
+        while (notUsedV.size() > 0) {
+            List<Integer> R = new ArrayList<>(); //достижимое множество
+            R.add(notUsedV.get(0));
+
+            List<Integer> Q = new ArrayList<>(); //контрдостижимое множество
+            Q.add(notUsedV.get(0));
+
+            int[] color = new int[countV];
+
+            //формируем достижимое и контрдостижимое множества
+            for (int i = 1; i < notUsedV.size(); i++) {
+                for (int k = 0; k < countV; k++) {
+                    if (notUsedV.contains(k))
+                        color[k] = 1;
+                    else
+                        color[k] = 2;
+                }
+
+                if (DFS(notUsedV.get(0), notUsedV.get(i), e, color)) {
+                    R.add(notUsedV.get(i));
+                }
+
+                for (int k = 0; k < countV; k++) {
+                    if (notUsedV.contains(k))
+                        color[k] = 1;
+                    else
+                        color[k] = 2;
+                }
+
+                if (DFS(notUsedV.get(i), notUsedV.get(0), e, color)) {
+                    Q.add(notUsedV.get(i));
+                }
+            }
+            //пересечение множеств R и Q
+            R.retainAll(Q);
+            List<Integer> intersection = new ArrayList<>(R);
+            Sub.add(new Subgraph(intersection));
+
+            for (Integer integer : intersection) {
+                notUsedV.remove(integer);
+            }
+        }
+
+        return Sub;
+    }
+
+    private boolean DFS(int u, int endV, List<Arc> E, int[] color) {
+        color[u] = 2;
+
+        if (u == endV) {
+            return true;
+        }
+
+        for (int w = 0; w < E.size(); w++) {
+            if (color[E.get(w).v2] == 1 && E.get(w).v1 == u) {
+                if (DFS(E.get(w).v2, endV, E, color)) {
+                    return true;
+                }
+                color[E.get(w).v2] = 1;
+            }
+        }
+
+        return false;
+    }
+
+    private List<Arc> createArcList() {
+        int n = adjacencyMatrix[0].length;
+        List<Arc> arcs = new ArrayList<>();
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (adjacencyMatrix[i][j] == 1) {
+                    arcs.add(new Arc(i, j));
+                }
+            }
+        }
+
+        return arcs;
+    }
+
+    public Integer[][] buildAdjacencyMatrix(List<Subgraph> subgraphs) {
+        int n = subgraphs.size();
+        List<List<Integer>> rightsIncidents = transformToRightsIncidents2();
+
+        Integer[][] matrix = createEmptyMatrix(n, n);
+
+        int countSub = 0;
+        for (int i = 0; i < n; i++) {
+            Subgraph subgraph = subgraphs.get(i);
+
+            for (int j = 0; j < subgraph.V.size(); j++) {
+                int v = subgraph.V.get(j);
+                List<Integer> vs = rightsIncidents.get(v); //получили куда ведет данная вершина
+
+                // должны найти в каких подграфах находятся данные вершины
+                List<Integer> subgraphList = new ArrayList<>(search(vs, subgraphs));
+
+                for (Integer integer : subgraphList) {
+                    if (i == integer) continue;
+                    matrix[i][integer] = 1;
+                }
+            }
+
+        }
+
+        return matrix;
+    }
+
+//    private Integer[] findDuplicates(List<Integer> list1, List<Integer> list2) {
+//        Set<Integer> result = new HashSet<>();
+//
+//        result.addAll(list1);
+//        result.addAll(list2);
+//
+//        return result.toArray();
+//    }
+
+    private Set<Integer> search(List<Integer> vs, List<Subgraph> subgraphs) {
+        Set<Integer> result = new HashSet<>();
+
+        for (Integer val1 : vs) {
+            for (int i = 0; i < subgraphs.size(); i++) {
+                for (int j = 0; j < subgraphs.get(i).V.size(); j++) {
+                    if (val1 == subgraphs.get(i).V.get(j)) {
+                        result.add(i);
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+
 
 }

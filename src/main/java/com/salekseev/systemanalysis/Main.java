@@ -1,7 +1,9 @@
 package com.salekseev.systemanalysis;
 
+import com.salekseev.systemanalysis.model.Arc;
 import com.salekseev.systemanalysis.model.SizeMatrix;
 import com.salekseev.systemanalysis.model.Graph;
+import com.salekseev.systemanalysis.model.Subgraph;
 import com.salekseev.systemanalysis.view.GeneralView;
 import com.salekseev.systemanalysis.view.MainController;
 import com.salekseev.systemanalysis.view.MainView;
@@ -11,6 +13,9 @@ import javafx.stage.Stage;
 import jfxtras.styles.jmetro.JMetro;
 import jfxtras.styles.jmetro.JMetroStyleClass;
 import jfxtras.styles.jmetro.Style;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main extends Application {
 
@@ -49,14 +54,34 @@ public class Main extends Application {
             {0,0,0,1,0,0},
     };
 
+    public static final Integer[][] orientedAdjacencyMatrix5 = {
+            {0,1,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,1,0,0,0},
+            {0,1,0,0,0,0,0,0,0,1},
+            {0,0,1,0,1,0,0,1,0,0},
+            {0,0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,1,0,0,0,0,1},
+            {0,0,0,0,0,1,0,1,0,0},
+            {0,0,0,0,0,0,0,0,0,1},
+            {1,0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,1,0}
+    };
+
+    public static final Integer[][] lab3 = {
+            {0,1,0,0,1,1,0,0,0,0},//1
+            {1,0,0,0,0,0,0,0,0,0},//2
+            {0,1,0,1,1,0,0,0,0,0},//3
+            {0,0,0,0,0,0,0,0,1,0},//4
+            {1,0,0,0,0,0,1,0,0,0},//5
+            {0,0,0,0,1,0,0,1,0,1},//6
+            {0,0,0,1,0,0,0,0,0,0},//7
+            {0,0,0,0,0,0,1,0,0,1},//8
+            {0,0,0,0,0,0,1,0,0,0},//9
+            {0,0,0,0,0,0,0,1,0,0} //10
+    };
+
     @Override
     public void start(Stage stage) {
-//        SizeMatrix sizeMatrix = new SizeMatrix();
-//        Graph graph = new Graph();
-//        MainView mainView = new MainView();
-//        MainController mainController = new MainController(sizeMatrix, graph, mainView);
-//        mainController.initialize();
-
         GeneralView mainView = new GeneralView();
         mainView.setMinSize(1500, 600);
 
@@ -68,12 +93,21 @@ public class Main extends Application {
         stage.setScene(scene);
         stage.show();
 
-        Graph graph = new Graph();
-        int shortWay = graph.setAdjacencyMatrix(adjacencyMatrix4)
-                .setOriented(false)
-                .findShortWay(0, 2);
+        List<Arc> arcs = new ArrayList<>();
+        List<Subgraph> sub = new ArrayList<>();
+        int n = lab3[0].length;
 
-        System.out.println(shortWay);
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (lab3[i][j] == 1) {
+                    arcs.add(new Arc(i, j));
+                }
+            }
+        }
+
+        Graph graph = new Graph();
+
+        System.out.println(sub);
     }
 
     public static void main(String[] args) {

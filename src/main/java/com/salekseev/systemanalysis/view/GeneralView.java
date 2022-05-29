@@ -2,6 +2,8 @@ package com.salekseev.systemanalysis.view;
 
 import com.salekseev.systemanalysis.model.Graph;
 import com.salekseev.systemanalysis.model.SizeMatrix;
+import com.salekseev.systemanalysis.view.lab3.TopologicalDecompositionController;
+import com.salekseev.systemanalysis.view.lab3.TopologicalDecompositionView;
 import com.salekseev.systemanalysis.view.lab4.ShortestPathController;
 import com.salekseev.systemanalysis.view.lab4.ShortestPathView;
 import com.salekseev.systemanalysis.view.lab5.StructuralRedundancyController;
@@ -32,12 +34,16 @@ public class GeneralView extends VBox {
         var structuralRedundancyView = new StructuralRedundancyView();
         var structuralRedundancyController = new StructuralRedundancyController(structuralRedundancyView);
 
+        var topologicalDecompositionView = new TopologicalDecompositionView();
+        var topologicalDecompositionController = new TopologicalDecompositionController(topologicalDecompositionView);
+
         Tab lab1 = new Tab("Лаб-1", mainView);
+        Tab lab3 = new Tab("Лаб-3", topologicalDecompositionView);
         Tab lab4 = new Tab("Лаб-4", shortestPathView);
         Tab lab5 = new Tab("Лаб-5", structuralRedundancyView);
 
         tabPane.setPrefSize(1500, 2000);
-        tabPane.getTabs().addAll(lab1, lab4, lab5);
+        tabPane.getTabs().addAll(lab1, lab3, lab4, lab5);
 
         return tabPane;
     }
