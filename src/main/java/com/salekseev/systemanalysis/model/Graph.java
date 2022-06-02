@@ -1,9 +1,6 @@
 package com.salekseev.systemanalysis.model;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class Graph {
 
@@ -412,6 +409,133 @@ public class Graph {
         return result;
     }
 
+//    private boolean checkForContours() {
+//        int matrixSize = adjacencyMatrix[0].length;
+//        for (int row = 0; row < matrixSize; row++) {
+//            for (int column = 0; column < matrixSize; column++) {
+//                if (adjacencyMatrix[row][column] == 1) {
+//                    let path = getPath(adjacencyMatrix, matrixSize, row, column)
+//                    if (path === null) {
+//                        return true
+//                    }
+//                }
+//            }
+//        }
+//        return false
+//    }
 
+    public Map<Integer, Map<Integer, Integer>> getMapLevels() {
+        int matrixSize = adjacencyMatrix[0].length;
+
+        // @ts-ignore
+        var mapLevels = new HashMap<Integer, Map<Integer, Integer>>();
+        // @ts-ignore
+        var mainMap = new HashMap<Integer, Integer>();
+
+
+        var vertices = new ArrayList<Integer>();
+
+        var newNumber = 1;
+        var level = 0;
+
+        var isVertixN0 = true;
+
+        // @ts-ignore
+        var map = new HashMap<Integer, Integer>();
+        for (var column = 0; column < matrixSize; column++) {
+            for (var row = 0; row < matrixSize; row++) {
+                if (adjacencyMatrix[row][column] == 1) {
+                    isVertixN0 = false;
+                    break;
+                }
+            }
+            if (isVertixN0) {
+                vertices.add(column);
+                mainMap.put(column + 1, newNumber);
+                map.put(column + 1, newNumber);
+                newNumber++;
+            } else {
+                isVertixN0 = true;
+            }
+        }
+        mapLevels.put(level, map);
+
+        var pastLevel = level;
+        level++;
+
+        while (true) {
+            // @ts-ignore
+            var map1 = new HashMap<Integer, Integer>();
+
+            System.out.println(mapLevels);
+            for (var column = 0; column < matrixSize; column++) {
+                if (vertices.contains(column)) {
+                    continue;
+                } else {
+                    var isVertexLevel = true;
+
+                    for (var row = 0; row < matrixSize; row++) {
+                        if (adjacencyMatrix[row][column] == 1) {
+                            var keyRow = row;
+
+                            if (!mainMap.containsKey(keyRow + 1)) {
+                                isVertexLevel = false;
+                            }
+                        }
+                    }
+
+                    if (isVertexLevel) {
+                        vertices.add(column);
+                        map1.put(column + 1, newNumber);
+                        newNumber++;
+                    } else {
+                        isVertexLevel = true;
+                    }
+                }
+            }
+
+            if (map1.size() == 0) {
+                break;
+            }
+
+            map1.forEach((key, value) -> mainMap.put(key, value));
+
+            mapLevels.put(level, map1);
+
+            pastLevel = level;
+            level++;
+        }
+
+        System.out.println(mapLevels);
+        return mapLevels;
+    }
+
+    public Integer[][] getNewAdjacencyMatrix(Map<Integer, Map<Integer, Integer>> mapLevels) {
+        var matrixSize = adjacencyMatrix[0].length;
+        var arr = createEmptyMatrix(matrixSize, matrixSize);
+
+        var newRow = 0;
+        var newColumn = 0;
+
+        for (var row = 0; row < matrixSize; row++) {
+            for (var column = 0; column < matrixSize; column++) {
+                if (adjacencyMatrix[row][column] == 1) {
+
+                    for(var entry : mapLevels.entrySet()) {
+                        var value = entry.getValue();
+                        if (value.get(row + 1) != null) {
+                            newRow = value.get(row + 1) - 1;
+                        }
+                        if (value.get(column + 1) != null) {
+                            newColumn = value.get(column + 1) - 1;
+                        }
+                    }
+
+                    arr[newRow][newColumn] = 1;
+                }
+            }
+        }
+        return arr;
+    }
 
 }

@@ -16,6 +16,7 @@ import jfxtras.styles.jmetro.Style;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Main extends Application {
 
@@ -80,6 +81,31 @@ public class Main extends Application {
             {0,0,0,0,0,0,0,1,0,0} //10
     };
 
+    public static final Integer[][] lab2 = {
+           //1 2 3 4 5 6 7
+            {0,1,0,0,0,0,0},//1
+            {0,0,0,0,0,1,0},//2
+            {1,0,0,0,1,0,1},//3
+            {0,0,0,0,0,1,0},//4
+            {0,1,0,0,0,0,0},//5
+            {0,0,0,0,0,0,0},//6
+            {0,0,0,1,0,0,0},//7
+    };
+
+    public static final Integer[][] lab22 = {
+           //1 2 3 4 5 6 7 8 9 10
+            {0,1,0,0,0,1,0,0,0,0},//1
+            {0,0,1,0,0,0,0,0,0,0},//2
+            {0,0,0,0,0,0,0,0,0,0},//3
+            {0,0,0,0,0,0,0,0,0,0},//4
+            {0,0,0,1,0,0,0,0,0,0},//5
+            {0,0,1,1,0,0,0,0,0,0},//6
+            {0,1,0,0,0,0,0,0,0,0},//7
+            {0,0,0,0,0,1,1,0,0,0},//8
+            {0,1,0,0,0,0,0,0,0,0},//9
+            {0,0,0,0,1,0,1,1,1,0} //10
+    };
+
     @Override
     public void start(Stage stage) {
         GeneralView mainView = new GeneralView();
@@ -93,21 +119,14 @@ public class Main extends Application {
         stage.setScene(scene);
         stage.show();
 
-        List<Arc> arcs = new ArrayList<>();
-        List<Subgraph> sub = new ArrayList<>();
-        int n = lab3[0].length;
+        Graph graph = new Graph().setAdjacencyMatrix(lab2).setOriented(true);
 
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                if (lab3[i][j] == 1) {
-                    arcs.add(new Arc(i, j));
-                }
-            }
-        }
+        Map<Integer, Map<Integer, Integer>> levels = graph.getMapLevels();
 
-        Graph graph = new Graph();
+        System.out.println(levels);
 
-        System.out.println(sub);
+        Integer[][] ajmatr = graph.getNewAdjacencyMatrix(levels);
+        System.out.println(ajmatr);
     }
 
     public static void main(String[] args) {
